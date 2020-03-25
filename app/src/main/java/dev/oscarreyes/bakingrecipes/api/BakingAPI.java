@@ -26,7 +26,7 @@ public class BakingAPI {
 	 * Reads the mock api file from raw resources
 	 * @param context The context where to get the resource instance
 	 */
-	public static void getRecipesMock(final Context context) {
+	public static void getRecipesMock(final Context context, final RecipesResult recipesResult) {
 		new AsyncTask<Integer, Void, List<Recipe>>() {
 			@Override
 			protected List<Recipe> doInBackground(Integer... resources) {
@@ -40,7 +40,7 @@ public class BakingAPI {
 
 			@Override
 			protected void onPostExecute(List<Recipe> recipes) {
-				super.onPostExecute(recipes);
+				recipesResult.result(recipes);
 			}
 		}.execute(R.raw.baking);
 	}
@@ -71,5 +71,9 @@ public class BakingAPI {
 		}
 
 		return writer.toString();
+	}
+
+	public interface RecipesResult {
+		void result(List<Recipe> recipes);
 	}
 }
