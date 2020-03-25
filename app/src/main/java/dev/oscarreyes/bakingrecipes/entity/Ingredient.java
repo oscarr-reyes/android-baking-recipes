@@ -1,18 +1,18 @@
 package dev.oscarreyes.bakingrecipes.entity;
 
 public class Ingredient {
-	private int quantity;
+	private float quantity;
 	private String measure;
 	private String ingredient;
 
 	public Ingredient() {
 	}
 
-	public int getQuantity() {
+	public float getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(float quantity) {
 		this.quantity = quantity;
 	}
 
