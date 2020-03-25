@@ -18,9 +18,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 	private static final String TAG = RecipeAdapter.class.getSimpleName();
 
 	private final List<Recipe> recipes;
+	private final ItemClickListener onClickListener;
 
-	public RecipeAdapter(List<Recipe> recipes) {
+	public RecipeAdapter(List<Recipe> recipes, ItemClickListener onClickListener) {
 		this.recipes = recipes;
+		this.onClickListener = onClickListener;
 	}
 
 	@NonNull
@@ -45,7 +47,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 		return this.recipes.size();
 	}
 
-	class RecipeViewHolder extends RecyclerView.ViewHolder {
+	public interface ItemClickListener {
+		void onItemClick(int index);
+	}
+
+	class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 		private TextView name;
 		private TextView servings;
 
@@ -54,6 +60,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
 			this.name = itemView.findViewById(R.id.recipe_item_name);
 			this.servings = itemView.findViewById(R.id.recipe_item_servings_value);
+
+			itemView.setOnClickListener(this);
 		}
 
 		void bind(Recipe recipe) {
@@ -62,7 +70,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
 			this.name.setText(recipeName);
 			this.servings.setText(String.valueOf(recipeServings));
+		}
 
+		@Override
+		public void onClick(View v) {
+			final int position = this.getAdapterPosition();
+
+			onClickListener.onItemClick(position);
 		}
 	}
 }

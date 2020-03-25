@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -49,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void loadAdapter(List<Recipe> recipes) {
-		RecipeAdapter recipeAdapter = new RecipeAdapter(recipes);
+		RecipeAdapter recipeAdapter = new RecipeAdapter(recipes, index -> {
+			Toast.makeText(this, String.format("Selected index: %s", index), Toast.LENGTH_SHORT).show();
+
+			// TODO: Transition activity to the selected recipe in detail
+		});
 
 		this.recipesRecycler.setAdapter(recipeAdapter);
 	}
