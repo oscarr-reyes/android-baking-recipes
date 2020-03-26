@@ -1,6 +1,9 @@
 <resources>
 	<string name="app_name">Baking Recipes</string>
 
-	<!-- Recipe recyclerview item -->
+	<!-- Recipe list recyclerview item -->
 	<string name="recipe_item_servings_label">Servings:</string>
+
+	<!-- Recipe detail -->
+	<string name="recipe_detail_ingredients_label">Recipe ingredients</string>
 </resources>

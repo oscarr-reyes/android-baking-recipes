@@ -1,30 +1,34 @@
-package dev.oscarreyes.bakingrecipes;
+package dev.oscarreyes.bakingrecipes.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import java.util.List;
 
+import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.adapter.RecipeAdapter;
 import dev.oscarreyes.bakingrecipes.api.BakingAPI;
 import dev.oscarreyes.bakingrecipes.entity.Recipe;
 
-public class MainActivity extends AppCompatActivity {
-	private static final String TAG = MainActivity.class.getSimpleName();
+public class RecipeListActivity extends AppCompatActivity {
+	private static final String TAG = RecipeListActivity.class.getSimpleName();
 	private static final String[] PERMISSIONS = new String[]{Manifest.permission.INTERNET};
 	private static final int PERMISSION_CODE = 174;
+
+	public static final String PARCEABLE_RECIPE = "recipe";
 
 	RecyclerView recipesRecycler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.recipe_list);
 
 		this.loadViews();
 		this.setupLayout();
@@ -51,12 +55,20 @@ public class MainActivity extends AppCompatActivity {
 
 	private void loadAdapter(List<Recipe> recipes) {
 		RecipeAdapter recipeAdapter = new RecipeAdapter(recipes, index -> {
-			Toast.makeText(this, String.format("Selected index: %s", index), Toast.LENGTH_SHORT).show();
+			final Recipe recipe = recipes.get(index);
 
-			// TODO: Transition activity to the selected recipe in detail
+			this.transitionToDetail(recipe);
 		});
 
 		this.recipesRecycler.setAdapter(recipeAdapter);
+	}
+
+	private void transitionToDetail(Recipe recipe) {
+		final Intent intent = new Intent(this, RecipeDetailActivity.class);
+
+		intent.putExtra(PARCEABLE_RECIPE, recipe);
+
+		this.startActivity(intent);
 	}
 
 	private void fetchRecipeCollection() {
