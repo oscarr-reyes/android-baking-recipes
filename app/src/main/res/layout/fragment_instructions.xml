@@ -16,12 +16,10 @@
 			android:layout_margin="16dp"
 			android:text="@string/recipe_detail_ingredients_label"
 			android:textAppearance="?attr/textAppearanceHeadline6" />
-
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/rv_steps"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" />
-
 	</RelativeLayout>
 
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/rv_steps"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
 </LinearLayout>
