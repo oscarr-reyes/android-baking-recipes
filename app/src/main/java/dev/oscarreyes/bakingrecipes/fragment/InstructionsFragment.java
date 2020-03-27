@@ -1,5 +1,6 @@
 package dev.oscarreyes.bakingrecipes.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,11 +64,14 @@ public class InstructionsFragment extends Fragment {
 	}
 
 	private void setupRecyclerLayout() {
-		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
+		Context context = this.getContext();
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 
 		linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
 		this.stepsRecycler.setLayoutManager(linearLayoutManager);
 		this.stepsRecycler.setHasFixedSize(true);
+		this.stepsRecycler.addItemDecoration(dividerItemDecoration);
 	}
 }
