@@ -20,7 +20,8 @@ public class RecipeListActivity extends AppCompatActivity {
 	private static final String[] PERMISSIONS = new String[]{Manifest.permission.INTERNET};
 	private static final int PERMISSION_CODE = 174;
 
-	public static final String PARCEABLE_RECIPE = "recipe";
+	public static final String BUNDLE_RECIPE_INDEX = "recipe-index";
+	public static final String BUNDLE_RECIPE_NAME = "recipe-name";
 
 	RecyclerView recipesRecycler;
 
@@ -65,7 +66,8 @@ public class RecipeListActivity extends AppCompatActivity {
 	private void transitionToDetail(Recipe recipe) {
 		final Intent intent = new Intent(this, RecipeDetailActivity.class);
 
-		intent.putExtra(PARCEABLE_RECIPE, recipe);
+		intent.putExtra(BUNDLE_RECIPE_INDEX, recipe.getId());
+		intent.putExtra(BUNDLE_RECIPE_NAME, recipe.getName());
 
 		this.startActivity(intent);
 	}
