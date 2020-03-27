@@ -8,17 +8,29 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import dev.oscarreyes.bakingrecipes.R;
+import dev.oscarreyes.bakingrecipes.adapter.StepAdapter;
+import dev.oscarreyes.bakingrecipes.api.BakingAPI;
+import dev.oscarreyes.bakingrecipes.entity.Step;
 
 public class InstructionsFragment extends Fragment {
-	public InstructionsFragment() {
+
+	private RecyclerView stepsRecycler;
+
+	private int recipeIndex;
+
+	public InstructionsFragment(int recipeIndex) {
+		this.recipeIndex = recipeIndex;
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		// return super.onCreateView(inflater, container, savedInstanceState);
 		View rootView = inflater.inflate(R.layout.fragment_instructions, container, false);
 
 		this.loadViews(rootView);
@@ -26,7 +38,35 @@ public class InstructionsFragment extends Fragment {
 		return rootView;
 	}
 
-	private void loadViews(View view) {
+	@Override
+	public void onStart() {
+		super.onStart();
 
+		this.fetchSteps();
+	}
+
+	private void loadViews(View view) {
+		this.stepsRecycler = view.findViewById(R.id.rv_steps);
+
+		this.setupRecyclerLayout();
+	}
+
+	private void loadAdapter(List<Step> steps) {
+		StepAdapter stepAdapter = new StepAdapter(steps);
+
+		this.stepsRecycler.setAdapter(stepAdapter);
+	}
+
+	private void fetchSteps() {
+		BakingAPI.getStepsByIndexMock(this.getContext(), this.recipeIndex, this::loadAdapter);
+	}
+
+	private void setupRecyclerLayout() {
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
+
+		linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+		this.stepsRecycler.setLayoutManager(linearLayoutManager);
+		this.stepsRecycler.setHasFixedSize(true);
 	}
 }

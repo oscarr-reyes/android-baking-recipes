@@ -8,20 +8,21 @@ import android.os.Bundle;
 
 import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.fragment.InstructionsFragment;
-import dev.oscarreyes.bakingrecipes.entity.Recipe;
 
 public class RecipeDetailActivity extends AppCompatActivity {
 
 	private ActionBar actionBar;
-	private Recipe recipe;
+
+	private String recipeName;
+	private int recipeIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recipe_detail);
 
-		this.loadViews();
 		this.loadBundle();
+		this.loadViews();
 	}
 
 	@Override
@@ -34,7 +35,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
 	private void loadBundle() {
 		Bundle bundle = this.getIntent().getExtras();
 
-		this.recipe = bundle.getParcelable(RecipeListActivity.PARCEABLE_RECIPE);
+		this.recipeName = bundle.getString(RecipeListActivity.BUNDLE_RECIPE_NAME);
+		this.recipeIndex = bundle.getInt(RecipeListActivity.BUNDLE_RECIPE_INDEX);
 	}
 
 	private void loadViews() {
@@ -44,7 +46,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 	}
 
 	private void loadFragments() {
-		InstructionsFragment instructionsFragment = new InstructionsFragment();
+		InstructionsFragment instructionsFragment = new InstructionsFragment(this.recipeIndex);
 		FragmentManager fragmentManager = this.getSupportFragmentManager();
 
 		fragmentManager.beginTransaction()
@@ -53,6 +55,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
 	}
 
 	private void setToolbarInfo() {
-		this.actionBar.setTitle(this.recipe.getName());
+		this.actionBar.setTitle(this.recipeName);
 	}
 }

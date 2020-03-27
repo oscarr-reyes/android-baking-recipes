@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/instructions_view"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:id="@+id/instructions_view">
+	android:orientation="vertical">
 
 	<RelativeLayout
 		android:id="@+id/instructions_ingredients_button"
@@ -16,6 +16,11 @@
 			android:layout_margin="16dp"
 			android:text="@string/recipe_detail_ingredients_label"
 			android:textAppearance="?attr/textAppearanceHeadline6" />
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/rv_steps"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
 
 	</RelativeLayout>
 
