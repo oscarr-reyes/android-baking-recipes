@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class RecipeListActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.recipe_list);
+		setContentView(R.layout.activity_recipe_list);
 
 		this.loadViews();
 		this.setupLayout();
