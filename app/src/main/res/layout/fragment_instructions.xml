@@ -5,18 +5,21 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<RelativeLayout
-		android:id="@+id/instructions_ingredients_button"
+	<com.google.android.material.tabs.TabLayout
+		android:id="@+id/recipe_instructions_tabs"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
-		<TextView
+		<com.google.android.material.tabs.TabItem
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_margin="16dp"
-			android:text="@string/recipe_detail_ingredients_label"
-			android:textAppearance="?attr/textAppearanceHeadline6" />
-	</RelativeLayout>
+			android:layout_height="match_parent"
+			android:text="@string/recipe_detail_tab_ingredients_label" />
+
+		<com.google.android.material.tabs.TabItem
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="@string/recipe_detail_tab_steps_label" />
+	</com.google.android.material.tabs.TabLayout>
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/rv_steps"

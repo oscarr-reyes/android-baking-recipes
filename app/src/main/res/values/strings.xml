@@ -5,5 +5,6 @@
 	<string name="recipe_item_servings_label">Servings:</string>
 
 	<!-- Recipe detail -->
-	<string name="recipe_detail_ingredients_label">Recipe ingredients</string>
+	<string name="recipe_detail_tab_ingredients_label">Ingredients</string>
+	<string name="recipe_detail_tab_steps_label">Steps</string>
 </resources>
