@@ -15,6 +15,7 @@ import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.entity.Step;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
+	private static final String TAG = StepAdapter.class.getSimpleName();
 	private List<Step> steps;
 
 	public StepAdapter(List<Step> steps) {

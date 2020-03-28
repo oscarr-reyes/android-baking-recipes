@@ -7,4 +7,7 @@
 	<!-- Recipe detail -->
 	<string name="recipe_detail_tab_ingredients_label">Ingredients</string>
 	<string name="recipe_detail_tab_steps_label">Steps</string>
+
+	<!-- TODO: Remove or change this placeholder text -->
+	<string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

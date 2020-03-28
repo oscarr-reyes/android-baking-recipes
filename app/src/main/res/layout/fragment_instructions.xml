@@ -21,8 +21,8 @@
 			android:text="@string/recipe_detail_tab_steps_label" />
 	</com.google.android.material.tabs.TabLayout>
 
-	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/rv_steps"
+	<androidx.viewpager.widget.ViewPager
+		android:id="@+id/recipe_instructions_pager"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content" />
+		android:layout_height="match_parent" />
 </LinearLayout>

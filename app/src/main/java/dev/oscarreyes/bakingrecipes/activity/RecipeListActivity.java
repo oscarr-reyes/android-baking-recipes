@@ -57,17 +57,17 @@ public class RecipeListActivity extends AppCompatActivity {
 		RecipeAdapter recipeAdapter = new RecipeAdapter(recipes, index -> {
 			final Recipe recipe = recipes.get(index);
 
-			this.transitionToDetail(recipe);
+			this.transitionToDetail(index, recipe.getName());
 		});
 
 		this.recipesRecycler.setAdapter(recipeAdapter);
 	}
 
-	private void transitionToDetail(Recipe recipe) {
+	private void transitionToDetail(int index, String recipeName) {
 		final Intent intent = new Intent(this, RecipeDetailActivity.class);
 
-		intent.putExtra(BUNDLE_RECIPE_INDEX, recipe.getId());
-		intent.putExtra(BUNDLE_RECIPE_NAME, recipe.getName());
+		intent.putExtra(BUNDLE_RECIPE_INDEX, index);
+		intent.putExtra(BUNDLE_RECIPE_NAME, recipeName);
 
 		this.startActivity(intent);
 	}
