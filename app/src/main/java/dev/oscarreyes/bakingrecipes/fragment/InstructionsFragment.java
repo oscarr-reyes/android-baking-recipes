@@ -60,9 +60,11 @@ public class InstructionsFragment extends Fragment {
 
 		FragmentManager fragmentManager = this.getFragmentManager();
 		IngredientsFragment ingredientsFragment = new IngredientsFragment(recipeIndex);
+		StepsFragment stepsFragment = new StepsFragment(recipeIndex);
 
 		InstructionsPagerAdapter instructionsAdapter = new InstructionsPagerAdapter(fragmentManager, 0);
 		instructionsAdapter.addFragment(ingredientsFragment, this.getString(R.string.recipe_detail_tab_ingredients_label));
+		instructionsAdapter.addFragment(stepsFragment, this.getString(R.string.recipe_detail_tab_steps_label));
 
 		this.instructionsPager.setAdapter(instructionsAdapter);
 	}
