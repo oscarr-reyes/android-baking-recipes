@@ -2,6 +2,7 @@ package dev.oscarreyes.bakingrecipes.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import dev.oscarreyes.bakingrecipes.api.BakingAPI;
 import dev.oscarreyes.bakingrecipes.entity.Ingredient;
 
 public class IngredientsFragment extends Fragment {
+	private static final String TAG = IngredientsFragment.class.getSimpleName();
+
 	private int recipeIndex;
 	private RecyclerView ingredientsRecycler;
 
@@ -46,6 +49,8 @@ public class IngredientsFragment extends Fragment {
 	}
 
 	private void loadAdapter(List<Ingredient> ingredients) {
+		Log.i(TAG, String.format("Showing %d ingredients", ingredients.size()));
+
 		IngredientAdapter ingredientAdapter = new IngredientAdapter(ingredients);
 
 		this.ingredientsRecycler.setAdapter(ingredientAdapter);
@@ -58,6 +63,8 @@ public class IngredientsFragment extends Fragment {
 	}
 
 	private void fetchIngredients() {
+		Log.i(TAG, "Fetching ingredients");
+
 		Context context = this.getContext();
 		BakingAPI.getIngredientsByIndexMock(context, this.recipeIndex, this::loadAdapter);
 	}

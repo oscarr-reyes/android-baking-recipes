@@ -62,7 +62,7 @@ public class InstructionsFragment extends Fragment {
 		IngredientsFragment ingredientsFragment = new IngredientsFragment(recipeIndex);
 
 		InstructionsPagerAdapter instructionsAdapter = new InstructionsPagerAdapter(fragmentManager, 0);
-		instructionsAdapter.addFragment(ingredientsFragment);
+		instructionsAdapter.addFragment(ingredientsFragment, this.getString(R.string.recipe_detail_tab_ingredients_label));
 
 		this.instructionsPager.setAdapter(instructionsAdapter);
 	}
