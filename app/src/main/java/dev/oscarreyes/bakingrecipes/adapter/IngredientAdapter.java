@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.entity.Ingredient;
