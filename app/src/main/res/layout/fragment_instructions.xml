@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/instructions_view"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
 	<com.google.android.material.tabs.TabLayout
 		android:id="@+id/recipe_instructions_tabs"
@@ -11,7 +12,6 @@
 
 	<androidx.viewpager.widget.ViewPager
 		android:id="@+id/recipe_instructions_pager"
-		android:layout_below="@id/recipe_instructions_tabs"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
-</RelativeLayout>
+</LinearLayout>
