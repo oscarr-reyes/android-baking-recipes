@@ -54,10 +54,10 @@ public class RecipeListActivity extends AppCompatActivity {
 	}
 
 	private void loadAdapter(List<Recipe> recipes) {
-		RecipeAdapter recipeAdapter = new RecipeAdapter(recipes, index -> {
-			final Recipe recipe = recipes.get(index);
+		RecipeAdapter recipeAdapter = new RecipeAdapter(recipes, position -> {
+			final Recipe recipe = recipes.get(position);
 
-			this.transitionToDetail(index, recipe.getName());
+			this.transitionToDetail(position, recipe.getName());
 		});
 
 		this.recipesRecycler.setAdapter(recipeAdapter);

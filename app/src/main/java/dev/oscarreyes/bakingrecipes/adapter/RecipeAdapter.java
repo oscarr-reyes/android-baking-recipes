@@ -13,16 +13,17 @@ import java.util.List;
 
 import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.entity.Recipe;
+import dev.oscarreyes.bakingrecipes.util.AdapterClickListener;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 	private static final String TAG = RecipeAdapter.class.getSimpleName();
 
 	private final List<Recipe> recipes;
-	private final ItemClickListener onClickListener;
+	private final AdapterClickListener clickListener;
 
-	public RecipeAdapter(List<Recipe> recipes, ItemClickListener onClickListener) {
+	public RecipeAdapter(List<Recipe> recipes, AdapterClickListener clickListener) {
 		this.recipes = recipes;
-		this.onClickListener = onClickListener;
+		this.clickListener = clickListener;
 	}
 
 	@NonNull
@@ -45,10 +46,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 	@Override
 	public int getItemCount() {
 		return this.recipes.size();
-	}
-
-	public interface ItemClickListener {
-		void onItemClick(int index);
 	}
 
 	class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -76,7 +73,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 		public void onClick(View v) {
 			final int position = this.getAdapterPosition();
 
-			onClickListener.onItemClick(position);
+			clickListener.onItemClick(position);
 		}
 	}
 }

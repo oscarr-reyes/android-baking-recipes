@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.adapter.StepAdapter;
 import dev.oscarreyes.bakingrecipes.api.BakingAPI;
 import dev.oscarreyes.bakingrecipes.entity.Step;
+import dev.oscarreyes.bakingrecipes.util.AdapterClickListener;
 
 public class StepsFragment extends Fragment {
 	private static final String TAG = StepsFragment.class.getSimpleName();
@@ -58,7 +60,9 @@ public class StepsFragment extends Fragment {
 	private void loadAdapter(List<Step> steps) {
 		Log.i(TAG, String.format("Showing %d steps", steps.size()));
 
-		final StepAdapter stepAdapter = new StepAdapter(steps);
+		final StepAdapter stepAdapter = new StepAdapter(steps, position -> {
+			Toast.makeText(this.getContext(), String.format("Open details for step %d", position), Toast.LENGTH_SHORT).show();
+		});
 
 		this.stepsRecycler.setAdapter(stepAdapter);
 	}

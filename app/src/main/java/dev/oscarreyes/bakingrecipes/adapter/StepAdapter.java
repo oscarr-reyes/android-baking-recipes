@@ -13,13 +13,17 @@ import java.util.List;
 
 import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.entity.Step;
+import dev.oscarreyes.bakingrecipes.util.AdapterClickListener;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
 	private static final String TAG = StepAdapter.class.getSimpleName();
-	private List<Step> steps;
 
-	public StepAdapter(List<Step> steps) {
+	private List<Step> steps;
+	private AdapterClickListener clickListener;
+
+	public StepAdapter(List<Step> steps, AdapterClickListener clickListener) {
 		this.steps = steps;
+		this.clickListener = clickListener;
 	}
 
 	@NonNull
@@ -44,13 +48,15 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 		return this.steps.size();
 	}
 
-	class StepViewHolder extends RecyclerView.ViewHolder {
+	class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 		private TextView shortDescription;
 
 		public StepViewHolder(@NonNull View itemView) {
 			super(itemView);
 
 			this.loadViews(itemView);
+
+			itemView.setOnClickListener(this);
 		}
 
 		private void loadViews(View view) {
@@ -61,6 +67,13 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 			final String shortDescription = step.getShortDescription();
 
 			this.shortDescription.setText(shortDescription);
+		}
+
+		@Override
+		public void onClick(View v) {
+			final int position = this.getAdapterPosition();
+
+			clickListener.onItemClick(position);
 		}
 	}
 }
