@@ -6,14 +6,14 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import dev.oscarreyes.bakingrecipes.R;
+import dev.oscarreyes.bakingrecipes.entity.Step;
 import dev.oscarreyes.bakingrecipes.fragment.InstructionsFragment;
 import dev.oscarreyes.bakingrecipes.util.RecipeStepListener;
 
 public class RecipeInstructionsActivity extends AppCompatActivity implements RecipeStepListener {
-	public static final String BUNDLE_RECIPE_STEP_INDEX = "recipe-step-index";
+	public static final String BUNDLE_RECIPE_STEP = "recipe-step";
 
 	private ActionBar actionBar;
 
@@ -63,10 +63,10 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Rec
 	}
 
 	@Override
-	public void onStepSelected(int stepIndex) {
+	public void onStepSelected(Step step) {
 		Intent intent = new Intent(this, RecipeDetailActivity.class);
 
-		intent.putExtra(BUNDLE_RECIPE_STEP_INDEX, stepIndex);
+		intent.putExtra(BUNDLE_RECIPE_STEP, step);
 
 		this.startActivity(intent);
 	}

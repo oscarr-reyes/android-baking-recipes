@@ -22,6 +22,7 @@ import dev.oscarreyes.bakingrecipes.adapter.StepAdapter;
 import dev.oscarreyes.bakingrecipes.api.BakingAPI;
 import dev.oscarreyes.bakingrecipes.entity.Step;
 import dev.oscarreyes.bakingrecipes.util.AdapterClickListener;
+import dev.oscarreyes.bakingrecipes.util.RecipeStepListener;
 
 public class StepsFragment extends Fragment {
 	private static final String TAG = StepsFragment.class.getSimpleName();
@@ -29,11 +30,11 @@ public class StepsFragment extends Fragment {
 	private int recipeIndex;
 
 	private RecyclerView stepsRecycler;
-	private AdapterClickListener clickListener;
+	private RecipeStepListener recipeStepListener;
 
-	public StepsFragment(int recipeIndex, AdapterClickListener clickListener) {
+	public StepsFragment(int recipeIndex, RecipeStepListener recipeStepListener) {
 		this.recipeIndex = recipeIndex;
-		this.clickListener = clickListener;
+		this.recipeStepListener = recipeStepListener;
 	}
 
 	@Nullable
@@ -62,7 +63,10 @@ public class StepsFragment extends Fragment {
 	private void loadAdapter(List<Step> steps) {
 		Log.i(TAG, String.format("Showing %d steps", steps.size()));
 
-		final StepAdapter stepAdapter = new StepAdapter(steps, this.clickListener);
+		final StepAdapter stepAdapter = new StepAdapter(
+			steps,
+			position -> this.recipeStepListener.onStepSelected(steps.get(position))
+		);
 
 		this.stepsRecycler.setAdapter(stepAdapter);
 	}

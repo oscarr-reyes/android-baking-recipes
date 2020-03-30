@@ -76,7 +76,7 @@ public class InstructionsFragment extends Fragment {
 
 		FragmentManager fragmentManager = this.getFragmentManager();
 		IngredientsFragment ingredientsFragment = new IngredientsFragment(recipeIndex);
-		StepsFragment stepsFragment = new StepsFragment(recipeIndex, position -> this.callback.onStepSelected(position));
+		StepsFragment stepsFragment = new StepsFragment(recipeIndex, step -> this.callback.onStepSelected(step));
 
 		InstructionsPagerAdapter instructionsAdapter = new InstructionsPagerAdapter(fragmentManager, 0);
 		instructionsAdapter.addFragment(ingredientsFragment, this.getString(R.string.recipe_detail_tab_ingredients_label));
