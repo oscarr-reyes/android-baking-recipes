@@ -29,9 +29,11 @@ public class StepsFragment extends Fragment {
 	private int recipeIndex;
 
 	private RecyclerView stepsRecycler;
+	private AdapterClickListener clickListener;
 
-	public StepsFragment(int recipeIndex) {
+	public StepsFragment(int recipeIndex, AdapterClickListener clickListener) {
 		this.recipeIndex = recipeIndex;
+		this.clickListener = clickListener;
 	}
 
 	@Nullable
@@ -60,9 +62,7 @@ public class StepsFragment extends Fragment {
 	private void loadAdapter(List<Step> steps) {
 		Log.i(TAG, String.format("Showing %d steps", steps.size()));
 
-		final StepAdapter stepAdapter = new StepAdapter(steps, position -> {
-			Toast.makeText(this.getContext(), String.format("Open details for step %d", position), Toast.LENGTH_SHORT).show();
-		});
+		final StepAdapter stepAdapter = new StepAdapter(steps, this.clickListener);
 
 		this.stepsRecycler.setAdapter(stepAdapter);
 	}

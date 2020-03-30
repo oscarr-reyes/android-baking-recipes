@@ -1,5 +1,6 @@
 package dev.oscarreyes.bakingrecipes.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.adapter.InstructionsPagerAdapter;
+import dev.oscarreyes.bakingrecipes.util.RecipeStepListener;
 
 public class InstructionsFragment extends Fragment {
 	private static final String TAG = InstructionsFragment.class.getSimpleName();
@@ -23,6 +25,7 @@ public class InstructionsFragment extends Fragment {
 	private TabLayout instructionsTab;
 	private ViewPager instructionsPager;
 
+	private RecipeStepListener callback;
 	private int recipeIndex;
 
 	public InstructionsFragment(int recipeIndex) {
@@ -37,6 +40,19 @@ public class InstructionsFragment extends Fragment {
 		this.loadViews(rootView);
 
 		return rootView;
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+
+		try {
+			this.callback = (RecipeStepListener) context;
+		} catch (ClassCastException e) {
+			final String message = String.format("%s must implement RecipeStepListener", context.toString());
+
+			throw new ClassCastException(message);
+		}
 	}
 
 	@Override
@@ -60,7 +76,7 @@ public class InstructionsFragment extends Fragment {
 
 		FragmentManager fragmentManager = this.getFragmentManager();
 		IngredientsFragment ingredientsFragment = new IngredientsFragment(recipeIndex);
-		StepsFragment stepsFragment = new StepsFragment(recipeIndex);
+		StepsFragment stepsFragment = new StepsFragment(recipeIndex, position -> this.callback.onStepSelected(position));
 
 		InstructionsPagerAdapter instructionsAdapter = new InstructionsPagerAdapter(fragmentManager, 0);
 		instructionsAdapter.addFragment(ingredientsFragment, this.getString(R.string.recipe_detail_tab_ingredients_label));

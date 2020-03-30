@@ -11,7 +11,8 @@
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme"
 		tools:ignore="LockedOrientationActivity">
-		<activity android:name=".activity.RecipeDetailActivity"></activity>
+		<activity android:name=".activity.RecipeDetailActivity" />
+		<activity android:name=".activity.RecipeInstructionsActivity" />
 		<activity
 			android:name=".activity.RecipeListActivity"
 			android:launchMode="singleTask"

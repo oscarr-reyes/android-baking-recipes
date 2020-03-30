@@ -64,7 +64,7 @@ public class RecipeListActivity extends AppCompatActivity {
 	}
 
 	private void transitionToDetail(int index, String recipeName) {
-		final Intent intent = new Intent(this, RecipeDetailActivity.class);
+		final Intent intent = new Intent(this, RecipeInstructionsActivity.class);
 
 		intent.putExtra(BUNDLE_RECIPE_INDEX, index);
 		intent.putExtra(BUNDLE_RECIPE_NAME, recipeName);
