@@ -32,6 +32,7 @@ public class RecipeListActivity extends AppCompatActivity {
 
 		this.loadViews();
 		this.setupLayout();
+		this.requestPermissions(PERMISSIONS, PERMISSION_CODE);
 	}
 
 	@Override
