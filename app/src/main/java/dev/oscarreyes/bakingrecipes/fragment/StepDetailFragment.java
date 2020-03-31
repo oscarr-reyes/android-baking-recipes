@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -30,6 +31,8 @@ public class StepDetailFragment extends Fragment {
 
 	private Step step;
 
+	private TextView stepShortDescription;
+	private TextView stepFullDescription;
 	private PlayerView stepPlayer;
 
 	private SimpleExoPlayer exoPlayer;
@@ -56,9 +59,20 @@ public class StepDetailFragment extends Fragment {
 		if (!stepVideo.isEmpty()) {
 			this.setupPlayer(Uri.parse(stepVideo));
 		}
+
+		this.setData();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		this.playerRelease();
 	}
 
 	private void loadViews(View view) {
+		this.stepShortDescription = view.findViewById(R.id.step_detail_short_description);
+		this.stepFullDescription = view.findViewById(R.id.step_detail_full_description);
 		this.stepPlayer = view.findViewById(R.id.step_detail_player);
 	}
 
@@ -91,5 +105,13 @@ public class StepDetailFragment extends Fragment {
 			this.exoPlayer.release();
 			this.exoPlayer = null;
 		}
+	}
+
+	private void setData() {
+		final String shortDescription = this.step.getShortDescription();
+		final String fullDescription = this.step.getDescription();
+
+		this.stepShortDescription.setText(shortDescription);
+		this.stepFullDescription.setText(fullDescription);
 	}
 }
