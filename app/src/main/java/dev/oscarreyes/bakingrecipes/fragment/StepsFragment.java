@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,22 +18,20 @@ import java.util.List;
 
 import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.adapter.StepAdapter;
-import dev.oscarreyes.bakingrecipes.api.BakingAPI;
 import dev.oscarreyes.bakingrecipes.entity.Step;
 import dev.oscarreyes.bakingrecipes.util.AdapterClickListener;
-import dev.oscarreyes.bakingrecipes.util.RecipeStepListener;
 
 public class StepsFragment extends Fragment {
 	private static final String TAG = StepsFragment.class.getSimpleName();
 
-	private int recipeIndex;
+	private List<Step> steps;
 
 	private RecyclerView stepsRecycler;
-	private RecipeStepListener recipeStepListener;
+	private AdapterClickListener clickListener;
 
-	public StepsFragment(int recipeIndex, RecipeStepListener recipeStepListener) {
-		this.recipeIndex = recipeIndex;
-		this.recipeStepListener = recipeStepListener;
+	public StepsFragment(List<Step> steps, AdapterClickListener clickListener) {
+		this.steps = steps;
+		this.clickListener = clickListener;
 	}
 
 	@Nullable
@@ -51,7 +48,7 @@ public class StepsFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		this.fetchSteps();
+		this.loadAdapter();
 	}
 
 	private void loadViews(View view) {
@@ -60,21 +57,15 @@ public class StepsFragment extends Fragment {
 		this.setupRecyclerLayout();
 	}
 
-	private void loadAdapter(List<Step> steps) {
-		Log.i(TAG, String.format("Showing %d steps", steps.size()));
+	private void loadAdapter() {
+		Log.i(TAG, String.format("Showing %d steps", this.steps.size()));
 
 		final StepAdapter stepAdapter = new StepAdapter(
-			steps,
-			position -> this.recipeStepListener.onStepSelected(steps.get(position))
+			this.steps,
+			this.clickListener
 		);
 
 		this.stepsRecycler.setAdapter(stepAdapter);
-	}
-
-	private void fetchSteps() {
-		final Context context = this.getContext();
-
-		BakingAPI.getStepsByIndexMock(context, this.recipeIndex, this::loadAdapter);
 	}
 
 	private void setupRecyclerLayout() {

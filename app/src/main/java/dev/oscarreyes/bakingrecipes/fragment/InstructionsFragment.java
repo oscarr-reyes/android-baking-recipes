@@ -15,9 +15,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.List;
+
 import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.adapter.InstructionsPagerAdapter;
-import dev.oscarreyes.bakingrecipes.util.RecipeStepListener;
+import dev.oscarreyes.bakingrecipes.entity.Ingredient;
+import dev.oscarreyes.bakingrecipes.entity.Step;
+import dev.oscarreyes.bakingrecipes.util.AdapterClickListener;
 
 public class InstructionsFragment extends Fragment {
 	private static final String TAG = InstructionsFragment.class.getSimpleName();
@@ -25,11 +29,13 @@ public class InstructionsFragment extends Fragment {
 	private TabLayout instructionsTab;
 	private ViewPager instructionsPager;
 
-	private RecipeStepListener callback;
-	private int recipeIndex;
+	private AdapterClickListener callback;
+	private List<Ingredient> ingredients;
+	private List<Step> steps;
 
-	public InstructionsFragment(int recipeIndex) {
-		this.recipeIndex = recipeIndex;
+	public InstructionsFragment(List<Ingredient> ingredients, List<Step> steps) {
+		this.ingredients = ingredients;
+		this.steps = steps;
 	}
 
 	@Nullable
@@ -47,9 +53,9 @@ public class InstructionsFragment extends Fragment {
 		super.onAttach(context);
 
 		try {
-			this.callback = (RecipeStepListener) context;
+			this.callback = (AdapterClickListener) context;
 		} catch (ClassCastException e) {
-			final String message = String.format("%s must implement RecipeStepListener", context.toString());
+			final String message = String.format("%s must implement AdapterClickListener", context.toString());
 
 			throw new ClassCastException(message);
 		}
@@ -75,8 +81,8 @@ public class InstructionsFragment extends Fragment {
 		Log.i(TAG, "Loading pager");
 
 		FragmentManager fragmentManager = this.getFragmentManager();
-		IngredientsFragment ingredientsFragment = new IngredientsFragment(recipeIndex);
-		StepsFragment stepsFragment = new StepsFragment(recipeIndex, step -> this.callback.onStepSelected(step));
+		IngredientsFragment ingredientsFragment = new IngredientsFragment(this.ingredients);
+		StepsFragment stepsFragment = new StepsFragment(this.steps, this.callback);
 
 		InstructionsPagerAdapter instructionsAdapter = new InstructionsPagerAdapter(fragmentManager, 0);
 		instructionsAdapter.addFragment(ingredientsFragment, this.getString(R.string.recipe_detail_tab_ingredients_label));

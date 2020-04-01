@@ -1,10 +1,5 @@
 package dev.oscarreyes.bakingrecipes.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,19 +7,30 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
+import java.util.List;
+
 import dev.oscarreyes.bakingrecipes.BuildConfig;
 import dev.oscarreyes.bakingrecipes.R;
+import dev.oscarreyes.bakingrecipes.api.BakingAPI;
+import dev.oscarreyes.bakingrecipes.entity.Ingredient;
 import dev.oscarreyes.bakingrecipes.entity.Step;
 import dev.oscarreyes.bakingrecipes.fragment.InstructionsFragment;
-import dev.oscarreyes.bakingrecipes.util.RecipeStepListener;
+import dev.oscarreyes.bakingrecipes.util.AdapterClickListener;
 
-public class RecipeInstructionsActivity extends AppCompatActivity implements RecipeStepListener {
+public class RecipeInstructionsActivity extends AppCompatActivity implements AdapterClickListener {
 	public static final String BUNDLE_RECIPE_STEP = "recipe-step";
 
 	private ActionBar actionBar;
 
 	private String recipeName;
 	private int recipeIndex;
+	private List<Step> steps;
+	private List<Ingredient> ingredients;
 	private boolean starred;
 	private SharedPreferences preferences;
 
@@ -45,6 +51,7 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Rec
 		super.onStart();
 
 		this.setToolbarInfo();
+		this.fetchData();
 	}
 
 	@Override
@@ -73,6 +80,16 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Rec
 		return true;
 	}
 
+	@Override
+	public void onItemClick(int position) {
+		final Step step = this.steps.get(position);
+		final Intent intent = new Intent(this, RecipeDetailActivity.class);
+
+		intent.putExtra(BUNDLE_RECIPE_STEP, step);
+
+		this.startActivity(intent);
+	}
+
 	private void loadBundle() {
 		Bundle bundle = this.getIntent().getExtras();
 
@@ -82,12 +99,10 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Rec
 
 	private void loadViews() {
 		this.actionBar = this.getSupportActionBar();
-
-		this.loadFragments();
 	}
 
 	private void loadFragments() {
-		InstructionsFragment instructionsFragment = new InstructionsFragment(this.recipeIndex);
+		InstructionsFragment instructionsFragment = new InstructionsFragment(this.ingredients, this.steps);
 		FragmentManager fragmentManager = this.getSupportFragmentManager();
 
 		fragmentManager.beginTransaction()
@@ -131,12 +146,24 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Rec
 		item.setIcon(resourceIcon);
 	}
 
-	@Override
-	public void onStepSelected(Step step) {
-		Intent intent = new Intent(this, RecipeDetailActivity.class);
+	private void fetchData() {
+		BakingAPI.getStepsByIndexMock(this, this.recipeIndex, this::loadSteps);
+		BakingAPI.getIngredientsByIndexMock(this, this.recipeIndex, this::loadIngredients);
+	}
 
-		intent.putExtra(BUNDLE_RECIPE_STEP, step);
+	private void loadSteps(List<Step> steps) {
+		this.steps = steps;
 
-		this.startActivity(intent);
+		if (this.ingredients != null) {
+			this.loadFragments();
+		}
+	}
+
+	private void loadIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+
+		if (this.steps != null) {
+			this.loadFragments();
+		}
 	}
 }

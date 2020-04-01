@@ -18,17 +18,17 @@ import java.util.List;
 
 import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.adapter.IngredientAdapter;
-import dev.oscarreyes.bakingrecipes.api.BakingAPI;
 import dev.oscarreyes.bakingrecipes.entity.Ingredient;
 
 public class IngredientsFragment extends Fragment {
 	private static final String TAG = IngredientsFragment.class.getSimpleName();
 
-	private int recipeIndex;
 	private RecyclerView ingredientsRecycler;
 
-	public IngredientsFragment(int recipeIndex) {
-		this.recipeIndex = recipeIndex;
+	private List<Ingredient> ingredients;
+
+	public IngredientsFragment(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
 	}
 
 	@Nullable
@@ -45,13 +45,13 @@ public class IngredientsFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		this.fetchIngredients();
+		this.loadAdapter();
 	}
 
-	private void loadAdapter(List<Ingredient> ingredients) {
-		Log.i(TAG, String.format("Showing %d ingredients", ingredients.size()));
+	private void loadAdapter() {
+		Log.i(TAG, String.format("Showing %d ingredients", this.ingredients.size()));
 
-		IngredientAdapter ingredientAdapter = new IngredientAdapter(ingredients);
+		IngredientAdapter ingredientAdapter = new IngredientAdapter(this.ingredients);
 
 		this.ingredientsRecycler.setAdapter(ingredientAdapter);
 	}
@@ -60,13 +60,6 @@ public class IngredientsFragment extends Fragment {
 		this.ingredientsRecycler = view.findViewById(R.id.rv_ingredients);
 
 		this.setupRecyclerLayout();
-	}
-
-	private void fetchIngredients() {
-		Log.i(TAG, "Fetching ingredients");
-
-		Context context = this.getContext();
-		BakingAPI.getIngredientsByIndexMock(context, this.recipeIndex, this::loadAdapter);
 	}
 
 	private void setupRecyclerLayout() {
