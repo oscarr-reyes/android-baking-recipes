@@ -1,13 +1,16 @@
 package dev.oscarreyes.bakingrecipes.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 import dev.oscarreyes.bakingrecipes.BuildConfig;
 import dev.oscarreyes.bakingrecipes.R;
+import dev.oscarreyes.bakingrecipes.activity.RecipeListActivity;
 
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
@@ -19,6 +22,13 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 		SharedPreferences preferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
 		views.setTextViewText(R.id.widget_recipe_name, preferences.getString(context.getString(R.string.pref_key_recipe_name), "No starred recipe"));
 		views.setTextViewText(R.id.widget_recipe_content, preferences.getString(context.getString(R.string.pref_key_recipe_content), "Star a recipe"));
+
+		// Open main activity when clicking on the widget
+		Intent intent = new Intent(context, RecipeListActivity.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+		views.setOnClickPendingIntent(R.id.widget_recipe_name, pendingIntent);
+		views.setOnClickPendingIntent(R.id.widget_recipe_content, pendingIntent);
 
 		// Instruct the widget manager to update the widget
 		appWidgetManager.updateAppWidget(appWidgetId, views);
