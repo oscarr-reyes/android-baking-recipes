@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dev.oscarreyes.bakingrecipes.BuildConfig;
 import dev.oscarreyes.bakingrecipes.R;
@@ -132,10 +133,15 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Ada
 
 			this.starred = false;
 		} else {
+			final String simpleSteps = this.steps.stream()
+				.filter(step -> step.getId() != 0)
+				.map(step -> String.format("%d. %s", step.getId(), step.getShortDescription()))
+				.collect(Collectors.joining("\n"));
+
 			editor
 				.putInt(keyRecipeIndex, this.recipeIndex)
 				.putString(keyRecipeName, this.recipeName)
-				.putString(keyRecipeContent, "Random content");
+				.putString(keyRecipeContent, simpleSteps);
 
 			resourceIcon = R.drawable.ic_star_black_18dp;
 
