@@ -1,12 +1,18 @@
 package dev.oscarreyes.bakingrecipes.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import dev.oscarreyes.bakingrecipes.BuildConfig;
 import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.entity.Step;
 import dev.oscarreyes.bakingrecipes.fragment.InstructionsFragment;
@@ -19,6 +25,8 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Rec
 
 	private String recipeName;
 	private int recipeIndex;
+	private boolean starred;
+	private SharedPreferences preferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,9 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Rec
 
 		this.loadBundle();
 		this.loadViews();
+
+		this.preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
+		this.starred = this.preferences.getInt(this.getString(R.string.pref_key_recipe_index), -1) != -1;
 	}
 
 	@Override
@@ -34,6 +45,32 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Rec
 		super.onStart();
 
 		this.setToolbarInfo();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = this.getMenuInflater();
+
+		inflater.inflate(R.menu.menu_recipe, menu);
+
+		if (this.starred) {
+			MenuItem item = menu.findItem(R.id.menu_recipe_favorite);
+
+			item.setIcon(R.drawable.ic_star_black_18dp);
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		final int itemId = item.getItemId();
+
+		if (itemId == R.id.menu_recipe_favorite) {
+			this.toggleStar(item);
+		}
+
+		return true;
 	}
 
 	private void loadBundle() {
@@ -60,6 +97,38 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Rec
 
 	private void setToolbarInfo() {
 		this.actionBar.setTitle(this.recipeName);
+	}
+
+	private void toggleStar(MenuItem item) {
+		final String keyRecipeIndex = this.getString(R.string.pref_key_recipe_index);
+		final String keyRecipeName = this.getString(R.string.pref_key_recipe_name);
+		final String keyRecipeContent = this.getString(R.string.pref_key_recipe_content);
+
+		SharedPreferences.Editor editor = this.preferences.edit();
+		int resourceIcon;
+
+		if (this.starred) {
+			editor
+				.remove(keyRecipeIndex)
+				.remove(keyRecipeName)
+				.remove(keyRecipeContent);
+
+			resourceIcon = R.drawable.ic_star_border_black_18dp;
+
+			this.starred = false;
+		} else {
+			editor
+				.putInt(keyRecipeIndex, this.recipeIndex)
+				.putString(keyRecipeName, this.recipeName)
+				.putString(keyRecipeContent, "Random content");
+
+			resourceIcon = R.drawable.ic_star_black_18dp;
+
+			this.starred = true;
+		}
+
+		editor.apply();
+		item.setIcon(resourceIcon);
 	}
 
 	@Override

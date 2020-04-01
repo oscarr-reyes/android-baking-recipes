@@ -7,4 +7,10 @@
 	<!-- Recipe detail -->
 	<string name="recipe_detail_tab_ingredients_label">Ingredients</string>
 	<string name="recipe_detail_tab_steps_label">Steps</string>
+	<string name="recipe_detail_menu_title">Watch</string>
+
+	<!-- Preference values -->
+	<string name="pref_key_recipe_index">recipe_index</string>
+	<string name="pref_key_recipe_name">recipe_name</string>
+	<string name="pref_key_recipe_content">recipe_content</string>
 </resources>
