@@ -23,6 +23,7 @@ import dev.oscarreyes.bakingrecipes.api.BakingAPI;
 import dev.oscarreyes.bakingrecipes.entity.Ingredient;
 import dev.oscarreyes.bakingrecipes.entity.Step;
 import dev.oscarreyes.bakingrecipes.fragment.InstructionsFragment;
+import dev.oscarreyes.bakingrecipes.fragment.StepDetailFragment;
 import dev.oscarreyes.bakingrecipes.util.AdapterClickListener;
 import dev.oscarreyes.bakingrecipes.widget.RecipeWidgetProvider;
 
@@ -30,6 +31,7 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Ada
 	public static final String BUNDLE_RECIPE_STEP = "recipe-step";
 
 	private ActionBar actionBar;
+	private boolean dualColumn;
 
 	private String recipeName;
 	private int recipeIndex;
@@ -48,6 +50,7 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Ada
 
 		this.preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
 		this.starred = this.preferences.getInt(this.getString(R.string.pref_key_recipe_index), -1) != -1;
+		this.dualColumn = this.findViewById(R.id.detail_container) != null;
 	}
 
 	@Override
@@ -87,11 +90,21 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Ada
 	@Override
 	public void onItemClick(int position) {
 		final Step step = this.steps.get(position);
-		final Intent intent = new Intent(this, RecipeDetailActivity.class);
 
-		intent.putExtra(BUNDLE_RECIPE_STEP, step);
+		if (this.dualColumn) {
+			FragmentManager fragmentManager = this.getSupportFragmentManager();
+			StepDetailFragment stepDetailFragment = new StepDetailFragment(step);
 
-		this.startActivity(intent);
+			fragmentManager.beginTransaction()
+				.replace(R.id.detail_container, stepDetailFragment)
+				.commit();
+		} else {
+			final Intent intent = new Intent(this, RecipeDetailActivity.class);
+
+			intent.putExtra(BUNDLE_RECIPE_STEP, step);
+
+			this.startActivity(intent);
+		}
 	}
 
 	private void loadBundle() {

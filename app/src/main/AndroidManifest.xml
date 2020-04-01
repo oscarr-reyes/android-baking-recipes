@@ -27,8 +27,7 @@
 		<activity android:name=".activity.RecipeInstructionsActivity" />
 		<activity
 			android:name=".activity.RecipeListActivity"
-			android:launchMode="singleTask"
-			android:screenOrientation="portrait">
+			android:launchMode="singleTask">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
