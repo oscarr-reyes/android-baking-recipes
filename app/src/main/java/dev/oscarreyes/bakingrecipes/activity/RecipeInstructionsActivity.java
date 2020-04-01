@@ -1,5 +1,7 @@
 package dev.oscarreyes.bakingrecipes.activity;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import dev.oscarreyes.bakingrecipes.entity.Ingredient;
 import dev.oscarreyes.bakingrecipes.entity.Step;
 import dev.oscarreyes.bakingrecipes.fragment.InstructionsFragment;
 import dev.oscarreyes.bakingrecipes.util.AdapterClickListener;
+import dev.oscarreyes.bakingrecipes.widget.RecipeWidgetProvider;
 
 public class RecipeInstructionsActivity extends AppCompatActivity implements AdapterClickListener {
 	public static final String BUNDLE_RECIPE_STEP = "recipe-step";
@@ -150,6 +153,8 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Ada
 
 		editor.apply();
 		item.setIcon(resourceIcon);
+
+		this.updateWidgets();
 	}
 
 	private void fetchData() {
@@ -171,5 +176,14 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Ada
 		if (this.steps != null) {
 			this.loadFragments();
 		}
+	}
+
+	private void updateWidgets() {
+		ComponentName provider = new ComponentName(this, RecipeWidgetProvider.class);
+		AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
+		int[] ids = widgetManager.getAppWidgetIds(provider);
+		RecipeWidgetProvider recipeWidgetProvider = new RecipeWidgetProvider();
+
+		recipeWidgetProvider.onUpdate(this, widgetManager, ids);
 	}
 }

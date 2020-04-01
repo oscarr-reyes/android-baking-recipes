@@ -3,8 +3,10 @@ package dev.oscarreyes.bakingrecipes.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
+import dev.oscarreyes.bakingrecipes.BuildConfig;
 import dev.oscarreyes.bakingrecipes.R;
 
 public class RecipeWidgetProvider extends AppWidgetProvider {
@@ -14,8 +16,9 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
 		// Construct the RemoteViews object
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_recipe_provider);
-		views.setTextViewText(R.id.widget_recipe_name, "Recipe name");
-		views.setTextViewText(R.id.widget_recipe_content, "Recipe content");
+		SharedPreferences preferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+		views.setTextViewText(R.id.widget_recipe_name, preferences.getString(context.getString(R.string.pref_key_recipe_name), "No starred recipe"));
+		views.setTextViewText(R.id.widget_recipe_content, preferences.getString(context.getString(R.string.pref_key_recipe_content), "Star a recipe"));
 
 		// Instruct the widget manager to update the widget
 		appWidgetManager.updateAppWidget(appWidgetId, views);
