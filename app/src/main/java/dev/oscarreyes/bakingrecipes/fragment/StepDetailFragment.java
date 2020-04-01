@@ -97,6 +97,8 @@ public class StepDetailFragment extends Fragment {
 		);
 
 		this.exoPlayer.prepare(mediaSource);
+
+		this.stepPlayer.setVisibility(View.VISIBLE);
 	}
 
 	private void playerRelease() {
