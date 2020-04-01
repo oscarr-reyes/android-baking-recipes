@@ -49,7 +49,7 @@ public class RecipeInstructionsActivity extends AppCompatActivity implements Ada
 		this.loadViews();
 
 		this.preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
-		this.starred = this.preferences.getInt(this.getString(R.string.pref_key_recipe_index), -1) != -1;
+		this.starred = this.preferences.getInt(this.getString(R.string.pref_key_recipe_index), -1) == this.recipeIndex;
 		this.dualColumn = this.findViewById(R.id.detail_container) != null;
 	}
 
