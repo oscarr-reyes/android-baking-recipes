@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+import androidx.test.espresso.IdlingResource;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -23,6 +26,7 @@ import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.entity.Ingredient;
 import dev.oscarreyes.bakingrecipes.entity.Recipe;
 import dev.oscarreyes.bakingrecipes.entity.Step;
+import dev.oscarreyes.bakingrecipes.util.DataIdlingResource;
 
 public class BakingAPI {
 	private static final String TAG = BakingAPI.class.getSimpleName();
@@ -32,8 +36,15 @@ public class BakingAPI {
 	 *
 	 * @param context The context where to get the resource instance
 	 */
-	public static void getRecipesMock(final Context context, final RecipesResult recipesResult) {
+	public static void getRecipesMock(final Context context, final RecipesResult recipesResult, @Nullable final DataIdlingResource idlingResource) {
 		new AsyncTask<Integer, Void, List<Recipe>>() {
+			@Override
+			protected void onPreExecute() {
+				if (idlingResource != null) {
+					idlingResource.setIdleState(false);
+				}
+			}
+
 			@Override
 			protected List<Recipe> doInBackground(Integer... resources) {
 				final int resource = resources[0];
@@ -48,6 +59,10 @@ public class BakingAPI {
 			@Override
 			protected void onPostExecute(List<Recipe> recipes) {
 				recipesResult.result(recipes);
+
+				if (idlingResource != null) {
+					idlingResource.setIdleState(true);
+				}
 			}
 		}.execute(R.raw.baking);
 	}

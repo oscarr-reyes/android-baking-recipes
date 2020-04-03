@@ -3,6 +3,7 @@ package dev.oscarreyes.bakingrecipes.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.IdlingResource;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import dev.oscarreyes.bakingrecipes.R;
 import dev.oscarreyes.bakingrecipes.adapter.RecipeAdapter;
 import dev.oscarreyes.bakingrecipes.api.BakingAPI;
 import dev.oscarreyes.bakingrecipes.entity.Recipe;
+import dev.oscarreyes.bakingrecipes.util.DataIdlingResource;
 
 public class RecipeListActivity extends AppCompatActivity {
 	private static final String TAG = RecipeListActivity.class.getSimpleName();
@@ -24,6 +26,8 @@ public class RecipeListActivity extends AppCompatActivity {
 	public static final String BUNDLE_RECIPE_NAME = "recipe-name";
 
 	RecyclerView recipesRecycler;
+
+	private DataIdlingResource idlingResource;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,14 @@ public class RecipeListActivity extends AppCompatActivity {
 	}
 
 	private void fetchRecipeCollection() {
-		BakingAPI.getRecipesMock(this, this::loadAdapter);
+		BakingAPI.getRecipesMock(this, this::loadAdapter, this.idlingResource);
+	}
+
+	public IdlingResource getIdlingResource() {
+		if (this.idlingResource == null) {
+			this.idlingResource = new DataIdlingResource();
+		}
+
+		return this.idlingResource;
 	}
 }
